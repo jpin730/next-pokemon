@@ -1,5 +1,3 @@
-// TODO: no title in document head
-/* eslint-disable @next/next/no-title-in-document-head */
 import Document, {
   Html,
   Head,
@@ -24,7 +22,6 @@ class MyDocument extends Document {
       <Html lang="en">
         <Head>
           {CssBaseline.flush()}
-          <title>Next Pokemon</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>

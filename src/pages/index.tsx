@@ -1,7 +1,13 @@
 import { NextPage } from "next";
 
+import { MainLayout } from "@/components";
+
 const Home: NextPage = () => {
-  return <h1>Next Pokemon</h1>;
+  return (
+    <MainLayout>
+      <h1>Pokemon</h1>
+    </MainLayout>
+  );
 };
 
 export default Home;
