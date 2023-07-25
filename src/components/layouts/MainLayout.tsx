@@ -1,6 +1,8 @@
 import Head from "next/head";
 import { FC, ReactNode } from "react";
 
+import { NavBar } from "../ui";
+
 type PropTypes = {
   children: ReactNode;
   title?: string;
@@ -10,7 +12,6 @@ export const MainLayout: FC<PropTypes> = ({
   children,
   title = "Next Pokemon",
 }) => {
-  console.log(children);
   return (
     <>
       <Head>
@@ -20,7 +21,9 @@ export const MainLayout: FC<PropTypes> = ({
         <meta name="keywords" content={`${title}, pokemon, pokedex`} />
       </Head>
 
-      <main>{children}</main>
+      <NavBar />
+
+      <main className="container">{children}</main>
     </>
   );
 };
