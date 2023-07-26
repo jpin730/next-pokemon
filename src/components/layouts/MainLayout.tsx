@@ -16,9 +16,11 @@ export const MainLayout: FC<PropTypes> = ({
     <>
       <Head>
         <title>{title}</title>
+        <link rel="icon" href="/favicon.ico" />
         <meta name="author" content="Jaime Pineda" />
         <meta name="description" content={title} />
         <meta name="keywords" content={`${title}, pokemon, pokedex`} />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
       <NavBar />
