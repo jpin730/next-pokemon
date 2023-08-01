@@ -1,18 +1,17 @@
-import { Text } from "@nextui-org/react";
+import { Row, Text } from "@nextui-org/react";
+import Link from "next/link";
 import { FC } from "react";
 
 export const NavBar: FC = () => {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        padding: "1rem",
-      }}
-    >
-      <Text h2 weight="light">
-        Next Pokemon
-      </Text>
+    <div>
+      <Row className="container" justify="space-between">
+        <Link href="/">
+          <Text h2 weight="light">
+            Next Pokemon
+          </Text>
+        </Link>
+      </Row>
     </div>
   );
 };
