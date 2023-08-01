@@ -3,15 +3,12 @@ import { FC, ReactNode } from "react";
 
 import { NavBar } from "../ui";
 
-type PropTypes = {
+interface Props {
   children: ReactNode;
   title?: string;
-};
+}
 
-export const MainLayout: FC<PropTypes> = ({
-  children,
-  title = "Next Pokemon",
-}) => {
+export const MainLayout: FC<Props> = ({ children, title = "Next Pokemon" }) => {
   return (
     <>
       <Head>

@@ -5,11 +5,11 @@ import pokeApi, { PokeApiResponse } from "@/api/pokeApi";
 import { Pokemon, PokemonShort } from "@/interfaces";
 import { MainLayout, PokemonCard } from "@/components";
 
-type PropTypes = {
+interface Props {
   pokemons: Pokemon[];
-};
+}
 
-export const getStaticProps: GetStaticProps<PropTypes> = async () => {
+export const getStaticProps: GetStaticProps<Props> = async () => {
   const { data } = await pokeApi.get<PokeApiResponse<PokemonShort[]>>(
     "/pokemon?limit=151"
   );
@@ -18,11 +18,11 @@ export const getStaticProps: GetStaticProps<PropTypes> = async () => {
     const image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${id}.svg`;
     return { id, name, url, image };
   });
-  const props: PropTypes = { pokemons };
+  const props: Props = { pokemons };
   return { props };
 };
 
-const Home: NextPage<PropTypes> = ({ pokemons }) => {
+const Home: NextPage<Props> = ({ pokemons }) => {
   return (
     <MainLayout>
       <Grid.Container gap={2} justify="flex-start">
