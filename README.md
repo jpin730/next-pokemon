@@ -1,6 +1,6 @@
 # Next Pokemon
 
-This little app is for implements Next.js fundamentals: Static Generated App.
+This app is for implementing Static Site Generation (SSG) with Next.js and using of NextUI.
 
 ## Usage
 
