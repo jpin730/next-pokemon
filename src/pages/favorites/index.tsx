@@ -1,4 +1,4 @@
-import { Link, Text } from "@nextui-org/react";
+import { Link } from "@nextui-org/react";
 import { NextPage } from "next";
 
 import { MainLayout } from "@/components";
@@ -6,11 +6,13 @@ import { MainLayout } from "@/components";
 const FavoritesPage: NextPage = () => {
   return (
     <MainLayout title="Favorites">
-      <Text h1>Favorites</Text>
+      <h1 className="mb-5 text-5xl font-bold">Favorites</h1>
 
-      <Link underline href="/">
+      <Link href="/" underline="always" className="mb-5">
         Back to home
       </Link>
+
+      <p>No favorites</p>
     </MainLayout>
   );
 };

@@ -1,4 +1,4 @@
-import { Card, Grid, Row, Text } from "@nextui-org/react";
+import { Card, CardBody, CardHeader, Image } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import { FC } from "react";
 
@@ -18,18 +18,17 @@ export const PokemonCard: FC<Props> = ({ pokemon }) => {
   };
 
   return (
-    <Grid xs={6} sm={4} md={3} title={name}>
-      <Card isHoverable isPressable onClick={onClick}>
-        <Card.Body>
-          <Card.Image src={image} width="100%" height={140} alt={name} />
-        </Card.Body>
-        <Card.Footer>
-          <Row justify="space-between">
-            <Text>{name}</Text>
-            <Text>#{id}</Text>
-          </Row>
-        </Card.Footer>
-      </Card>
-    </Grid>
+    <Card isHoverable isPressable onClick={onClick} title={name}>
+      <CardHeader className="justify-center py-0 sm:py-3">
+        <Image src={image} alt={name} className="m-auto h-40" />
+      </CardHeader>
+
+      <CardBody className="py-2 sm:p-5">
+        <p className="flex justify-between">
+          <span>{name}</span>
+          <span>#{id}</span>
+        </p>
+      </CardBody>
+    </Card>
   );
 };

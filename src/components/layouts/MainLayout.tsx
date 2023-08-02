@@ -21,9 +21,10 @@ export const MainLayout: FC<Props> = ({ children, title }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <NavBar />
-
-      <main className="container">{children}</main>
+      <div className="min-h-screen bg-background text-foreground dark">
+        <NavBar />
+        <main className="app-container">{children}</main>
+      </div>
     </>
   );
 };

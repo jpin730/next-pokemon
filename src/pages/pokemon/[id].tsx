@@ -1,9 +1,9 @@
-import { Button, Card, Grid, Image, Link, Row, Text } from "@nextui-org/react";
+import { Card, CardBody, Image, Link } from "@nextui-org/react";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 
+import { TOTAL_POKEMONS, capitalize } from "@/utils";
 import { PokemonFull, Sprites } from "@/interfaces";
 import { MainLayout } from "@/components";
-import { TOTAL_POKEMONS, capitalize } from "@/utils";
 import pokeApi from "@/api/pokeApi";
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 
 export const getStaticPaths: GetStaticPaths<{ id: string }> = async () => {
   const tempArray = [...Array(TOTAL_POKEMONS)].map(
-    (_, index) => `${index + 1}`
+    (_, index) => `${index + 1}`,
   );
   const paths = tempArray.map((id) => ({
     params: { id, name: "x" },
@@ -42,102 +42,74 @@ const PokemonPage: NextPage<Props> = ({ id, name, sprites }) => {
 
   return (
     <MainLayout title={title}>
-      <Text h1>
+      <h1 className="mb-5 text-5xl font-bold">
         {capitalizedName} #{id}
-      </Text>
+      </h1>
 
-      <Link underline href="/">
+      <Link href="/" underline="always" className="mb-5">
         Back to home
       </Link>
 
-      <Grid.Container gap={2} css={{ padding: "1rem 0" }}>
-        <Grid xs={12} md={4}>
-          <Card css={{ padding: "2rem" }}>
-            <Card.Body>
-              <Card.Image
-                src={sprites.other?.dream_world.front_default as string}
+      <div className="mb-5 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <Card>
+          <CardBody className="items-center">
+            <Image
+              alt={name}
+              title={name}
+              src={sprites.other?.dream_world.front_default as string}
+            />
+          </CardBody>
+        </Card>
+
+        <Card className="lg:col-span-2">
+          <CardBody className="justify-center">
+            <div className="grid grid-cols-2 justify-items-center sm:grid-cols-4 md:grid-cols-2 lg:grid-cols-4">
+              <Image
+                src={sprites.front_default}
                 alt={name}
-                title={name}
-                width="100%"
-                height={200}
+                width={100}
+                height={100}
               />
-            </Card.Body>
-          </Card>
-        </Grid>
+              <Image
+                src={sprites.back_default}
+                alt={name}
+                width={100}
+                height={100}
+              />
+              <Image
+                src={sprites.front_shiny}
+                alt={name}
+                width={100}
+                height={100}
+              />
+              <Image
+                src={sprites.back_shiny}
+                alt={name}
+                width={100}
+                height={100}
+              />
+            </div>
+          </CardBody>
+        </Card>
+      </div>
 
-        <Grid xs={12} md={8}>
-          <Card css={{ padding: "1rem" }}>
-            <Card.Body>
-              <Text size={30}>Sprites:</Text>
-
-              <Grid.Container gap={2}>
-                <Grid xs={6} sm={3}>
-                  <Image
-                    src={sprites.front_default}
-                    alt={name}
-                    width={100}
-                    height={100}
-                  />
-                </Grid>
-                <Grid xs={6} sm={3}>
-                  <Image
-                    src={sprites.back_default}
-                    alt={name}
-                    width={100}
-                    height={100}
-                  />
-                </Grid>
-                <Grid xs={6} sm={3}>
-                  <Image
-                    src={sprites.front_shiny}
-                    alt={name}
-                    width={100}
-                    height={100}
-                  />
-                </Grid>
-                <Grid xs={6} sm={3}>
-                  <Image
-                    src={sprites.back_shiny}
-                    alt={name}
-                    width={100}
-                    height={100}
-                  />
-                </Grid>
-              </Grid.Container>
-            </Card.Body>
-          </Card>
-        </Grid>
-      </Grid.Container>
-
-      <Row justify="space-between">
+      <div className="flex justify-between pb-5">
         {prev ? (
-          <Button
-            auto
-            ghost
-            as={Link}
-            color="gradient"
-            href={`/pokemon/${prev}`}
-          >
+          <Link href={`/pokemon/${prev}`} underline="always">
             Pokemon #{prev}
-          </Button>
+          </Link>
         ) : (
           <span></span>
         )}
 
         {next ? (
-          <Button
-            auto
-            ghost
-            as={Link}
-            color="gradient"
-            href={`/pokemon/${next}`}
-          >
+          <Link href={`/pokemon/${next}`} underline="always">
             Pokemon #{next}
-          </Button>
+          </Link>
         ) : (
           <span></span>
         )}
-      </Row>
+      </div>
     </MainLayout>
   );
 };
