@@ -8,15 +8,16 @@ interface Props {
   title?: string;
 }
 
-export const MainLayout: FC<Props> = ({ children, title = "Next Pokemon" }) => {
+export const MainLayout: FC<Props> = ({ children, title }) => {
+  const fullTitle = `Next Pokemon${title ? ` - ${title}` : ""}`;
   return (
     <>
       <Head>
-        <title>{title}</title>
+        <title>{fullTitle}</title>
         <link rel="icon" href="/favicon.ico" />
         <meta name="author" content="Jaime Pineda" />
-        <meta name="description" content={title} />
-        <meta name="keywords" content={`${title}, pokemon, pokedex`} />
+        <meta name="description" content={fullTitle} />
+        <meta name="keywords" content={`${fullTitle}, pokemon, pokedex`} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
