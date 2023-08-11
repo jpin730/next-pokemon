@@ -1,11 +1,12 @@
 import { Button, Card, CardBody, Image, Link } from "@nextui-org/react";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { useEffect, useState } from "react";
 
+import { hasFavorite, toggleFavorite } from "@/utils/favoritesLocalStorage";
 import { TOTAL_POKEMONS, capitalize } from "@/utils";
 import { PokemonFull, Sprites } from "@/interfaces";
 import { HeartIcon, MainLayout } from "@/components";
 import pokeApi from "@/api/pokeApi";
-import { useState } from "react";
 
 interface Props {
   id: string;
@@ -37,6 +38,10 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 const PokemonPage: NextPage<Props> = ({ id, name, sprites }) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
+  useEffect(() => {
+    setIsFavorite(hasFavorite(id));
+  }, [id]);
+
   const capitalizedName = capitalize(name);
   const title = `${capitalizedName} #${id}`;
 
@@ -44,6 +49,7 @@ const PokemonPage: NextPage<Props> = ({ id, name, sprites }) => {
   const next = +id < TOTAL_POKEMONS && +id + 1;
 
   const onToggleFavorite = () => {
+    toggleFavorite(id);
     setIsFavorite(!isFavorite);
   };
 
