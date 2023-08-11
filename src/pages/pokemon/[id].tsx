@@ -1,10 +1,11 @@
-import { Card, CardBody, Image, Link } from "@nextui-org/react";
+import { Button, Card, CardBody, Image, Link } from "@nextui-org/react";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 
 import { TOTAL_POKEMONS, capitalize } from "@/utils";
 import { PokemonFull, Sprites } from "@/interfaces";
-import { MainLayout } from "@/components";
+import { HeartIcon, MainLayout } from "@/components";
 import pokeApi from "@/api/pokeApi";
+import { useState } from "react";
 
 interface Props {
   id: string;
@@ -34,11 +35,17 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 };
 
 const PokemonPage: NextPage<Props> = ({ id, name, sprites }) => {
+  const [isFavorite, setIsFavorite] = useState(false);
+
   const capitalizedName = capitalize(name);
   const title = `${capitalizedName} #${id}`;
 
   const prev = +id > 1 && +id - 1;
   const next = +id < TOTAL_POKEMONS && +id + 1;
+
+  const onToggleFavorite = () => {
+    setIsFavorite(!isFavorite);
+  };
 
   return (
     <MainLayout title={title}>
@@ -46,9 +53,22 @@ const PokemonPage: NextPage<Props> = ({ id, name, sprites }) => {
         {capitalizedName} #{id}
       </h1>
 
-      <Link href="/" underline="always" className="mb-5">
-        Back to home
-      </Link>
+      <div className="mb-5 flex justify-between">
+        <Link href="/" underline="always" className="">
+          Back to home
+        </Link>
+
+        <div className="flex items-center">
+          <Button
+            isIconOnly
+            color="danger"
+            variant="light"
+            onClick={onToggleFavorite}
+          >
+            <HeartIcon filled={isFavorite} />
+          </Button>
+        </div>
+      </div>
 
       <div className="mb-5 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Card>

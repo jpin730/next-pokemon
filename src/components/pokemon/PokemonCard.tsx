@@ -18,7 +18,7 @@ export const PokemonCard: FC<Props> = ({ pokemon }) => {
   };
 
   return (
-    <Card isHoverable isPressable onClick={onClick} title={name}>
+    <Card isHoverable isPressable onClick={onClick}>
       <CardHeader className="justify-center py-0 sm:py-3">
         <Image src={image} alt={name} className="m-auto h-40" />
       </CardHeader>
