@@ -1,9 +1,9 @@
 import { GetStaticProps, NextPage } from "next";
 
+import { TOTAL_POKEMONS, getPokemonImageUrl } from "@/utils";
 import pokeApi, { PokeApiResponse } from "@/api/pokeApi";
 import { Pokemon, PokemonShort } from "@/interfaces";
 import { MainLayout, PokemonCard } from "@/components";
-import { TOTAL_POKEMONS } from "@/utils";
 
 interface Props {
   pokemons: Pokemon[];
@@ -11,11 +11,11 @@ interface Props {
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const { data } = await pokeApi.get<PokeApiResponse<PokemonShort[]>>(
-    "/pokemon?limit=151",
+    `/pokemon?limit=${TOTAL_POKEMONS}`,
   );
   const pokemons: Pokemon[] = data.results.map(({ name, url }) => {
     const id = url.split("/").at(-2) as string;
-    const image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${id}.svg`;
+    const image = getPokemonImageUrl(id);
     return { id, name, url, image };
   });
   const props: Props = { pokemons };
