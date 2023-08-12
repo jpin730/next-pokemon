@@ -39,7 +39,7 @@ const FavoritesPage: NextPage = () => {
 
         {pokemonsHasChanged && (
           <Button color="primary" variant="ghost" onClick={reloadPokemons}>
-            Clean List
+            <span className="text-white">Clean List</span>
           </Button>
         )}
       </div>

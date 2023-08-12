@@ -1,5 +1,5 @@
 import { Button, Card, CardBody, CardHeader, Image } from "@nextui-org/react";
-import { FC, MouseEvent, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import { hasFavorite, toggleFavorite } from "@/utils/favoritesLocalStorage";
@@ -25,8 +25,7 @@ export const PokemonCard: FC<Props> = ({ pokemon }) => {
     router.push(`/pokemon/${id}`);
   };
 
-  const onToggleFavorite = (event: MouseEvent) => {
-    event.stopPropagation();
+  const onToggleFavorite = () => {
     toggleFavorite(id);
     setIsFavorite(!isFavorite);
   };

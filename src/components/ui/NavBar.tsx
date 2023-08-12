@@ -2,8 +2,6 @@ import { Button } from "@nextui-org/react";
 import Link from "next/link";
 import { FC } from "react";
 
-import { HeartIcon } from "../icons";
-
 export const NavBar: FC = () => {
   return (
     <nav className="sticky top-0 z-50 mb-3 bg-black/60 py-2 backdrop-blur">
@@ -12,13 +10,7 @@ export const NavBar: FC = () => {
           Next Pokemon
         </Link>
 
-        <Button
-          as={Link}
-          color="danger"
-          variant="ghost"
-          href="/favorites"
-          startContent={<HeartIcon filled />}
-        >
+        <Button as={Link} color="danger" variant="ghost" href="/favorites">
           <span className="text-white">Favorites</span>
         </Button>
       </div>
