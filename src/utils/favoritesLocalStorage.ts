@@ -9,10 +9,9 @@ export const toggleFavorite = (id: string) => {
 
   favoriteSet.has(id) ? favoriteSet.delete(id) : favoriteSet.add(id);
 
-  localStorage.setItem(
-    FAVORITES_LOCAL_STORAGE,
-    JSON.stringify(Array.from(favoriteSet)),
-  );
+  const sortedArr = Array.from(favoriteSet).sort((a, b) => a.localeCompare(b));
+
+  localStorage.setItem(FAVORITES_LOCAL_STORAGE, JSON.stringify(sortedArr));
 };
 
 export const hasFavorite = (id: string): boolean => {

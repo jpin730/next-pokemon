@@ -1,4 +1,4 @@
-import { Button, Card, Image } from "@nextui-org/react";
+import { Button, Card, CardBody, CardHeader, Image } from "@nextui-org/react";
 import { FC, MouseEvent, useState } from "react";
 import { useRouter } from "next/router";
 
@@ -8,9 +8,10 @@ import { HeartIcon } from "../icons";
 
 interface Props {
   id: string;
+  onToggle: () => void;
 }
 
-export const PokemonFavoriteCard: FC<Props> = ({ id }) => {
+export const PokemonFavoriteCard: FC<Props> = ({ id, onToggle }) => {
   const router = useRouter();
 
   const [isFavorite, setIsFavorite] = useState(true);
@@ -25,6 +26,7 @@ export const PokemonFavoriteCard: FC<Props> = ({ id }) => {
     event.stopPropagation();
     toggleFavorite(id);
     setIsFavorite(!isFavorite);
+    onToggle();
   };
 
   return (
@@ -33,14 +35,19 @@ export const PokemonFavoriteCard: FC<Props> = ({ id }) => {
         isHoverable
         isPressable
         onClick={onClickCard}
-        className="z-0 w-full p-4"
+        className="z-0 w-full"
       >
-        <Image
-          removeWrapper
-          src={image}
-          alt="Favorite Pokemon"
-          className="mx-auto h-40"
-        />
+        <CardHeader>
+          <Image
+            removeWrapper
+            src={image}
+            alt="Favorite Pokemon"
+            className="mx-auto h-40"
+          />
+        </CardHeader>
+        <CardBody>
+          <p className="text-center">#{id}</p>
+        </CardBody>
       </Card>
 
       <Button
