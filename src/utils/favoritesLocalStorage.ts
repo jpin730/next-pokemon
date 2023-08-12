@@ -22,3 +22,6 @@ export const hasFavorite = (id: string): boolean => {
 
   return favorites.includes(id);
 };
+
+export const getAllFavorites = (): string[] =>
+  JSON.parse(localStorage.getItem(FAVORITES_LOCAL_STORAGE) || "[]");
