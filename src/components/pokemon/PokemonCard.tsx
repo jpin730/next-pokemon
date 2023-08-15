@@ -5,13 +5,19 @@ import { useRouter } from "next/router";
 import { hasFavorite, toggleFavorite } from "@/utils/favoritesLocalStorage";
 import { Pokemon } from "@/interfaces";
 import { HeartIcon } from "../icons";
+import { FAVORITES_QUERY } from "@/utils";
 
 interface Props {
   pokemon: Pokemon;
+  backToFavorites?: boolean;
   onToggle?: () => void;
 }
 
-export const PokemonCard: FC<Props> = ({ pokemon, onToggle }) => {
+export const PokemonCard: FC<Props> = ({
+  pokemon,
+  backToFavorites,
+  onToggle,
+}) => {
   const router = useRouter();
 
   const [isFavorite, setIsFavorite] = useState(false);
@@ -23,7 +29,7 @@ export const PokemonCard: FC<Props> = ({ pokemon, onToggle }) => {
   }, [id]);
 
   const onClick = () => {
-    router.push(`/pokemon/${name}`);
+    router.push(`/pokemon/${name}${backToFavorites ? FAVORITES_QUERY : ""}`);
   };
 
   const onToggleFavorite = () => {

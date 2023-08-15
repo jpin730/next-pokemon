@@ -73,6 +73,7 @@ const FavoritesPage: NextPage<Props> = ({ pokemons }) => {
         <div className="grid grid-cols-2 gap-4 pb-6 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
           {mappedPokemons.map((pokemon) => (
             <PokemonCard
+              backToFavorites
               key={pokemon.id}
               pokemon={pokemon}
               onToggle={toggleHandler}

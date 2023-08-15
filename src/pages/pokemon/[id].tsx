@@ -3,7 +3,7 @@ import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useEffect, useState } from "react";
 
 import { hasFavorite, toggleFavorite } from "@/utils/favoritesLocalStorage";
-import { TOTAL_POKEMONS, capitalize } from "@/utils";
+import { FAVORITES_QUERY, TOTAL_POKEMONS, capitalize } from "@/utils";
 import { OptimizedSprites, PokemonFull, PokemonShort } from "@/interfaces";
 import { HeartIcon, MainLayout } from "@/components";
 import pokeApi, { PokeApiResponse } from "@/api/pokeApi";
@@ -58,8 +58,10 @@ export const getStaticProps: GetStaticProps<
 
 const PokemonPage: NextPage<Props> = ({ id, name, sprites }) => {
   const [isFavorite, setIsFavorite] = useState(false);
+  const [backToFavorites, setBackToFavorites] = useState(false);
 
   useEffect(() => {
+    setBackToFavorites(window.location.search === FAVORITES_QUERY);
     setIsFavorite(hasFavorite(id));
   }, [id]);
 
@@ -81,8 +83,12 @@ const PokemonPage: NextPage<Props> = ({ id, name, sprites }) => {
       </h1>
 
       <div className="mb-5 flex justify-between">
-        <Link href="/" underline="always" className="">
-          Back to home
+        <Link
+          href={backToFavorites ? "/favorites" : "/"}
+          underline="always"
+          className=""
+        >
+          Back to {backToFavorites ? "favorites" : "home"}
         </Link>
 
         <div className="flex items-center">
@@ -140,23 +146,25 @@ const PokemonPage: NextPage<Props> = ({ id, name, sprites }) => {
         </Card>
       </div>
 
-      <div className="flex justify-between pb-5">
-        {prev ? (
-          <Link href={`/pokemon/${prev}`} underline="always">
-            Pokemon #{prev}
-          </Link>
-        ) : (
-          <span></span>
-        )}
+      {!backToFavorites && (
+        <div className="flex justify-between pb-5">
+          {prev ? (
+            <Link href={`/pokemon/${prev}`} underline="always">
+              Pokemon #{prev}
+            </Link>
+          ) : (
+            <span></span>
+          )}
 
-        {next ? (
-          <Link href={`/pokemon/${next}`} underline="always">
-            Pokemon #{next}
-          </Link>
-        ) : (
-          <span></span>
-        )}
-      </div>
+          {next ? (
+            <Link href={`/pokemon/${next}`} underline="always">
+              Pokemon #{next}
+            </Link>
+          ) : (
+            <span></span>
+          )}
+        </div>
+      )}
     </MainLayout>
   );
 };
