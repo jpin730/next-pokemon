@@ -70,7 +70,7 @@ const FavoritesPage: NextPage<Props> = ({ pokemons }) => {
           </CardBody>
         </Card>
       ) : (
-        <div className="grid grid-cols-2 gap-4 pb-6 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
           {mappedPokemons.map((pokemon) => (
             <PokemonCard
               backToFavorites

@@ -83,11 +83,7 @@ const PokemonPage: NextPage<Props> = ({ id, name, sprites }) => {
       </h1>
 
       <div className="mb-5 flex justify-between">
-        <Link
-          href={backToFavorites ? "/favorites" : "/"}
-          underline="always"
-          className=""
-        >
+        <Link href={backToFavorites ? "/favorites" : "/"} underline="always">
           Back to {backToFavorites ? "favorites" : "home"}
         </Link>
 
@@ -147,7 +143,7 @@ const PokemonPage: NextPage<Props> = ({ id, name, sprites }) => {
       </div>
 
       {!backToFavorites && (
-        <div className="flex justify-between pb-5">
+        <div className="mb-5 flex justify-between">
           {prev ? (
             <Link href={`/pokemon/${prev}`} underline="always">
               Pokemon #{prev}

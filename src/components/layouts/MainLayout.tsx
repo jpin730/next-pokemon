@@ -3,6 +3,7 @@ import { FC, ReactNode } from "react";
 
 import { NavBar } from "../ui";
 import { getPokemonImageUrl } from "@/utils";
+import { Link } from "@nextui-org/react";
 
 interface Props {
   children: ReactNode;
@@ -43,7 +44,15 @@ export const MainLayout: FC<Props> = ({ children, title }) => {
 
       <div className="min-h-screen bg-background text-foreground dark">
         <NavBar />
+
         <main className="app-container">{children}</main>
+
+        <footer className="py-5 text-center">
+          Made by{" "}
+          <Link target="_blank" href="https://github.com/jpin730">
+            Jaime Pineda
+          </Link>
+        </footer>
       </div>
     </>
   );
