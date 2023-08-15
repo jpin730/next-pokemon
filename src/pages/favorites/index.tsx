@@ -1,31 +1,50 @@
 import { Button, Card, CardBody, Link } from "@nextui-org/react";
-import { useEffect, useState } from "react";
-import { NextPage } from "next";
+import { useEffect, useMemo, useState } from "react";
+import { GetStaticProps, NextPage } from "next";
 
-import { MainLayout, PokemonFavoriteCard } from "@/components";
+import { MainLayout, PokemonCard } from "@/components";
 import { getAllFavorites } from "@/utils/favoritesLocalStorage";
+import { getStaticPokemons } from "@/utils";
+import { Pokemon } from "@/interfaces";
 
-const FavoritesPage: NextPage = () => {
-  const [pokemons, setPokemons] = useState<string[]>([]);
-  const [pokemonsHasChanged, setPokemonsHasChanged] = useState(false);
+interface Props {
+  pokemons: Pokemon[];
+}
+
+export const getStaticProps: GetStaticProps<Props> = async () =>
+  await getStaticPokemons();
+
+const FavoritesPage: NextPage<Props> = ({ pokemons }) => {
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const [mappedPokemons, setMappedPokemons] = useState<Pokemon[]>([]);
+  const [favoritesHasChanged, setfavoritesHasChanged] = useState(false);
+
+  const allPokemons: Record<string, Pokemon> = useMemo(
+    () => pokemons.reduce((prev, curr) => ({ ...prev, [curr.id]: curr }), {}),
+    [pokemons],
+  );
 
   useEffect(() => {
-    setPokemons(getAllFavorites());
-  }, []);
+    setFavorites(() => {
+      const allFavorites = getAllFavorites();
+      setMappedPokemons(allFavorites.map((id) => allPokemons[id]));
+      return allFavorites;
+    });
+  }, [allPokemons]);
 
   const reloadPokemons = () => {
-    setPokemons(getAllFavorites());
-    setPokemonsHasChanged(false);
+    setFavorites(getAllFavorites());
+    setfavoritesHasChanged(false);
   };
 
   const toggleHandler = () => {
-    const favorites = getAllFavorites();
+    const storedFavorites = getAllFavorites();
 
-    const allPokemonsAreInFavorite = pokemons.every((pokemon) =>
-      favorites.includes(pokemon),
+    const allPokemonsAreInFavorite = favorites.every((favorite) =>
+      storedFavorites.includes(favorite),
     );
 
-    setPokemonsHasChanged(!allPokemonsAreInFavorite);
+    setfavoritesHasChanged(!allPokemonsAreInFavorite);
   };
 
   return (
@@ -37,14 +56,14 @@ const FavoritesPage: NextPage = () => {
           Back to home
         </Link>
 
-        {pokemonsHasChanged && (
+        {favoritesHasChanged && (
           <Button color="primary" variant="ghost" onClick={reloadPokemons}>
             <span className="text-white">Clean List</span>
           </Button>
         )}
       </div>
 
-      {pokemons.length === 0 ? (
+      {favorites.length === 0 ? (
         <Card>
           <CardBody>
             <p className="text-center">No favorites</p>
@@ -52,8 +71,12 @@ const FavoritesPage: NextPage = () => {
         </Card>
       ) : (
         <div className="grid grid-cols-2 gap-4 pb-6 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
-          {pokemons.map((id) => (
-            <PokemonFavoriteCard key={id} id={id} onToggle={toggleHandler} />
+          {mappedPokemons.map((pokemon) => (
+            <PokemonCard
+              key={pokemon.id}
+              pokemon={pokemon}
+              onToggle={toggleHandler}
+            />
           ))}
         </div>
       )}

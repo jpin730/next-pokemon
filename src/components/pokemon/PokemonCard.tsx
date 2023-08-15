@@ -8,9 +8,10 @@ import { HeartIcon } from "../icons";
 
 interface Props {
   pokemon: Pokemon;
+  onToggle?: () => void;
 }
 
-export const PokemonCard: FC<Props> = ({ pokemon }) => {
+export const PokemonCard: FC<Props> = ({ pokemon, onToggle }) => {
   const router = useRouter();
 
   const [isFavorite, setIsFavorite] = useState(false);
@@ -28,6 +29,7 @@ export const PokemonCard: FC<Props> = ({ pokemon }) => {
   const onToggleFavorite = () => {
     toggleFavorite(id);
     setIsFavorite(!isFavorite);
+    onToggle && onToggle();
   };
 
   return (

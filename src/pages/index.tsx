@@ -1,26 +1,15 @@
 import { GetStaticProps, NextPage } from "next";
 
-import { TOTAL_POKEMONS, getPokemonImageUrl } from "@/utils";
-import pokeApi, { PokeApiResponse } from "@/api/pokeApi";
-import { Pokemon, PokemonShort } from "@/interfaces";
+import { TOTAL_POKEMONS, getStaticPokemons } from "@/utils";
 import { MainLayout, PokemonCard } from "@/components";
+import { Pokemon } from "@/interfaces";
 
 interface Props {
   pokemons: Pokemon[];
 }
 
-export const getStaticProps: GetStaticProps<Props> = async () => {
-  const { data } = await pokeApi.get<PokeApiResponse<PokemonShort[]>>(
-    `/pokemon?limit=${TOTAL_POKEMONS}`,
-  );
-  const pokemons: Pokemon[] = data.results.map(({ name, url }) => {
-    const id = url.split("/").at(-2) as string;
-    const image = getPokemonImageUrl(id);
-    return { id, name, url, image };
-  });
-  const props: Props = { pokemons };
-  return { props };
-};
+export const getStaticProps: GetStaticProps<Props> = async () =>
+  await getStaticPokemons();
 
 const Home: NextPage<Props> = ({ pokemons }) => {
   return (
