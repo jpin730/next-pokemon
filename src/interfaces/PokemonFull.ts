@@ -170,3 +170,11 @@ export interface Type {
   slot: number;
   type: Species;
 }
+
+export interface OptimizedSprites
+  extends Pick<
+    Sprites,
+    "back_default" | "back_shiny" | "front_default" | "front_shiny"
+  > {
+  dream_world_front_default: string;
+}

@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 
 import { hasFavorite, toggleFavorite } from "@/utils/favoritesLocalStorage";
 import { TOTAL_POKEMONS, capitalize } from "@/utils";
-import { PokemonFull, PokemonShort, Sprites } from "@/interfaces";
+import { OptimizedSprites, PokemonFull, PokemonShort } from "@/interfaces";
 import { HeartIcon, MainLayout } from "@/components";
 import pokeApi, { PokeApiResponse } from "@/api/pokeApi";
 
 interface Props {
   id: string;
   name: string;
-  sprites: Sprites;
+  sprites: OptimizedSprites;
 }
 
 export const getStaticPaths: GetStaticPaths<{
@@ -43,7 +43,16 @@ export const getStaticProps: GetStaticProps<
 
   const { id, name, sprites } = data;
 
-  const props: Props = { id: id.toString(), name, sprites };
+  const optimizedSprites: OptimizedSprites = {
+    back_default: sprites.back_default,
+    back_shiny: sprites.back_shiny,
+    front_default: sprites.front_default,
+    front_shiny: sprites.front_shiny,
+    dream_world_front_default: sprites.other?.dream_world
+      .front_default as string,
+  };
+
+  const props: Props = { id: id.toString(), name, sprites: optimizedSprites };
   return { props };
 };
 
@@ -94,7 +103,7 @@ const PokemonPage: NextPage<Props> = ({ id, name, sprites }) => {
             <Image
               alt={name}
               title={name}
-              src={sprites.other?.dream_world.front_default as string}
+              src={sprites.dream_world_front_default}
             />
           </CardBody>
         </Card>
