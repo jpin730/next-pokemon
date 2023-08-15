@@ -9,7 +9,7 @@ export const toggleFavorite = (id: string) => {
 
   favoriteSet.has(id) ? favoriteSet.delete(id) : favoriteSet.add(id);
 
-  const sortedArr = Array.from(favoriteSet).sort((a, b) => a.localeCompare(b));
+  const sortedArr = Array.from(favoriteSet).sort((a, b) => +a - +b);
 
   localStorage.setItem(FAVORITES_LOCAL_STORAGE, JSON.stringify(sortedArr));
 };
