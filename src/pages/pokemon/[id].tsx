@@ -28,7 +28,7 @@ export const getStaticPaths: GetStaticPaths<{
     params: { id },
   }));
 
-  return { paths, fallback: false };
+  return { paths, fallback: "blocking" };
 };
 
 export const getStaticProps: GetStaticProps<
@@ -39,21 +39,33 @@ export const getStaticProps: GetStaticProps<
 > = async ({ params }) => {
   const pathParam = params?.id;
 
-  const { data } = await pokeApi.get<PokemonFull>(`/pokemon/${pathParam}`);
+  try {
+    const { data } = await pokeApi.get<PokemonFull>(`/pokemon/${pathParam}`);
 
-  const { id, name, sprites } = data;
+    const { id, name, sprites } = data;
 
-  const optimizedSprites: OptimizedSprites = {
-    back_default: sprites.back_default,
-    back_shiny: sprites.back_shiny,
-    front_default: sprites.front_default,
-    front_shiny: sprites.front_shiny,
-    dream_world_front_default: sprites.other?.dream_world
-      .front_default as string,
-  };
+    const optimizedSprites: OptimizedSprites = {
+      back_default: sprites.back_default,
+      back_shiny: sprites.back_shiny,
+      front_default: sprites.front_default,
+      front_shiny: sprites.front_shiny,
+      dream_world_front_default: sprites.other?.dream_world
+        .front_default as string,
+    };
 
-  const props: Props = { id: id.toString(), name, sprites: optimizedSprites };
-  return { props };
+    const props: Props = { id: id.toString(), name, sprites: optimizedSprites };
+    return {
+      props,
+      revalidate: 86400, // seconds = 24 h
+    };
+  } catch {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
 };
 
 const PokemonPage: NextPage<Props> = ({ id, name, sprites }) => {
