@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 
 import { hasFavorite, toggleFavorite } from "@/utils/favoritesLocalStorage";
 import { TOTAL_POKEMONS, capitalize } from "@/utils";
-import { PokemonFull, Sprites } from "@/interfaces";
+import { PokemonFull, PokemonShort, Sprites } from "@/interfaces";
 import { HeartIcon, MainLayout } from "@/components";
-import pokeApi from "@/api/pokeApi";
+import pokeApi, { PokeApiResponse } from "@/api/pokeApi";
 
 interface Props {
   id: string;
@@ -14,24 +14,36 @@ interface Props {
   sprites: Sprites;
 }
 
-export const getStaticPaths: GetStaticPaths<{ id: string }> = async () => {
-  const tempArray = [...Array(TOTAL_POKEMONS)].map(
-    (_, index) => `${index + 1}`,
+export const getStaticPaths: GetStaticPaths<{
+  id: string;
+}> = async () => {
+  const ids = [...Array(TOTAL_POKEMONS)].map((_, index) => `${index + 1}`);
+
+  const { data } = await pokeApi.get<PokeApiResponse<PokemonShort[]>>(
+    `/pokemon?limit=${TOTAL_POKEMONS}`,
   );
-  const paths = tempArray.map((id) => ({
-    params: { id, name: "x" },
+  const names: string[] = data.results.map(({ name }) => name);
+
+  const paths = ids.concat(names).map((id) => ({
+    params: { id },
   }));
+
   return { paths, fallback: false };
 };
 
-export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-  const { id } = params as { id: string };
+export const getStaticProps: GetStaticProps<
+  Props,
+  {
+    id: string;
+  }
+> = async ({ params }) => {
+  const pathParam = params?.id;
 
-  const { data } = await pokeApi.get<PokemonFull>(`/pokemon/${id}`);
+  const { data } = await pokeApi.get<PokemonFull>(`/pokemon/${pathParam}`);
 
-  const { name, sprites } = data;
+  const { id, name, sprites } = data;
 
-  const props: Props = { id, name, sprites };
+  const props: Props = { id: id.toString(), name, sprites };
   return { props };
 };
 

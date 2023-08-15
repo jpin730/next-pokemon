@@ -22,7 +22,7 @@ export const PokemonCard: FC<Props> = ({ pokemon }) => {
   }, [id]);
 
   const onClick = () => {
-    router.push(`/pokemon/${id}`);
+    router.push(`/pokemon/${name}`);
   };
 
   const onToggleFavorite = () => {
