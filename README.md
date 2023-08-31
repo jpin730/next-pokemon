@@ -18,4 +18,4 @@ yarn dev
 
 ## Deployed app
 
-https://jpin730-next-pokemon.vercel.app
+https://next-pokemon-jpin730.vercel.app
